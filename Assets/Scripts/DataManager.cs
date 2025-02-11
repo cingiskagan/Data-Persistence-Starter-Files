@@ -5,11 +5,12 @@ using UnityEngine;
 
 public class DataManager : MonoBehaviour
 {
+    [HideInInspector]
     public static DataManager Instance;
-
-    //TODO: Separate variables as current user and highscore user
-    //carry data between scenes and persist
+    [HideInInspector]
     public UserData userData;
+    [HideInInspector]
+    public string currentUser;
 
     private void Awake()
     {
@@ -37,6 +38,8 @@ public class DataManager : MonoBehaviour
     {
         string json = JsonUtility.ToJson(userData);
         string path = Application.persistentDataPath + "/savefile.json";
+        Debug.Log("write");
+        Debug.Log(json);
     
         File.WriteAllText(path, json);
     }
@@ -45,6 +48,7 @@ public class DataManager : MonoBehaviour
     {
         string path = Application.persistentDataPath + "/savefile.json";
 
+        Debug.Log("read");
         Debug.Log(path);
 
         if (File.Exists(path))

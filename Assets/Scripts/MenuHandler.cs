@@ -2,20 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
+using static DataManager;
+
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
 public class MenuHandler : MonoBehaviour
 {
+    public TMP_Text HighScoreText;
+    public TMP_InputField UserNameInput;
+
+    void Start()
+    {
+        ShowHighScore();
+    }
+
     public void StartNew()
     {
         SceneManager.LoadScene(1);
+        SetCurrentUserName();
     }
 
     public void Exit()
     {
-        DataManager.Instance.SaveData(); 
+        Instance.SaveData(); 
 
         #if UNITY_EDITOR
             EditorApplication.ExitPlaymode();
@@ -24,8 +37,13 @@ public class MenuHandler : MonoBehaviour
         #endif
     }
 
-    public void SaveColorClicked()
+    public void SetCurrentUserName()
     {
-        DataManager.Instance.SaveData();
+        Instance.currentUser = UserNameInput.text;
+    }
+
+    void ShowHighScore(){
+        UserData userData = Instance.userData;
+        HighScoreText.text = $"High Score : {userData.UserName} : {userData.HighScore}";
     }
 }
